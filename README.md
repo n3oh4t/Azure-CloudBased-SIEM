@@ -35,7 +35,7 @@ This project demonstrates a simulated vulnerable Azure VM environment to showcas
 
 ![1749513873593](image/README/1749513873593.png)
 
-- Using the custom script and the IP address (from Event Viewer Log),using 3rd party API to fetch the latitude/longitude details.
+- Designed a custom script to use the IP address (from Event Viewer Log) and external 3rd party API to fetch the latitude/longitude details.
 ![1749513968007](image/README/1749513968007.png)
 
 
