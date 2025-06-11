@@ -1,7 +1,7 @@
 # Azure-CloudBased-SIEM
 This project demonstrates a simulated vulnerable Azure VM environment to showcase how Azure Sentinel, Microsoft’s cloud-native SIEM, detects and visualizes potential attacker activity.
 
-![1749512202802](image/README/1749512202802.png)
+![1749654068924](image/README/1749654068924.png)
 
 - We have set up an Azure Subscription with **a publicly exposed Virtual Machine** (firewalls have been disabled for simulation)
 - The attack requests are logged (in Powershell) and then ingested into **Azure Log Analytics Workspace.**
@@ -19,9 +19,9 @@ This project demonstrates a simulated vulnerable Azure VM environment to showcas
 
 - Normally, logs in Windows machine are fetched from `Event Viewer`.
     ![1749513325546](image/README/1749513325546.png)
-- However, when those logs are extracted, we don't have any details related to the "location" from where the requests were generated.
+- However, when those logs are extracted, we don't have any details related to the "location" i.e., _where are the requests being made from?_.
 
-- So, using a 3rd party API and custom script - `https://ipgeolocation.io/` , we fetch the location details for the associated log.
+- So, using a 3rd party API - `https://ipgeolocation.io/` and custom script , we fetch the location details for the associated log.
 
 
 ### Implementation
