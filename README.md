@@ -3,7 +3,7 @@ This project demonstrates a simulated vulnerable Azure VM environment to showcas
 
 ![1749654270870](image/README/1749654270870.png)
 
-- We have set up an Azure Subscription with **a publicly exposed Virtual Machine** (firewalls have been disabled for simulation)
+- We have set up an Azure Subscription with **a publicly exposed Virtual Machine** (firewalls have been disabled for simulating a **_HoneyPot_**.
 - The attack requests are logged (in Powershell) and then ingested into **Azure Log Analytics Workspace.**
 - Leveraged **Azure Sentinel** to map and monitor the requests being generated geographically.
 - This helps visualise attacker behavior on a real-time dashboard, including **geolocation-based threat detection**.
@@ -28,27 +28,22 @@ This project demonstrates a simulated vulnerable Azure VM environment to showcas
 
 - After the Azure VM is configured with Azure Sentinel, we connect to the VM via RDP. 
 - As different users try to login to the windows VM, the `failed activity` gets logged. Vieweing those logs in the `Event Viewer` =>
+    ![1749513653485](image/README/1749513653485.png)
 
-![1749513653485](image/README/1749513653485.png)
+    ![1749513825051](image/README/1749513825051.png)
 
-![1749513825051](image/README/1749513825051.png)
-
-![1749513873593](image/README/1749513873593.png)
+    ![1749513873593](image/README/1749513873593.png)
 
 - Designed a *custom script* to use the IP address (from Event Viewer Log) and external 3rd party API to fetch the latitude/longitude details.
 ![1749513968007](image/README/1749513968007.png)
 
 
 ### Log Analysis - Azure Log Analytics Workspace
-- Performed Log Analysis on the fetched logs from failed login attempts as shown below :
-![1749514129296](image/README/1749514129296.png)
-<br>
-![1749514152132](image/README/1749514152132.png)
-<br>
-- Filtering logs using Azure KQL queries to comprehend logs better.
-![1749514172667](image/README/1749514172667.png)
+- Performed Log Analysis on the fetched logs from **failed login attempts** as shown below :
+    ![1749514129296](image/README/1749514129296.png)<br>
+    ![1749514152132](image/README/1749514152132.png)<br>
 
-- Used a **custom KQL query** to extract latitude and longitude data from logs, identifying the geographical origin of incoming attacks.
+- Used a **custom KQL query** to extract `latitude and longitude` data from logs, identifying the geographical origin of incoming attacks.
     ```
     Query Used =>
     FAILED_RDP_WITH_GEO_CL
@@ -69,7 +64,7 @@ This project demonstrates a simulated vulnerable Azure VM environment to showcas
 
 - Mapped the **country of origin** to each **IP address** to visualize and analyze the source of malicious activity.
 
-![1749655006016](image/README/1749655006016.png)
+    ![1749655006016](image/README/1749655006016.png)
 
 #### Sample Log 
 ```
