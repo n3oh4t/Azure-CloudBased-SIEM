@@ -27,7 +27,7 @@ This project demonstrates a simulated vulnerable Azure VM environment to showcas
 ### Implementation
 
 - After the Azure VM is configured with Azure Sentinel, we connect to the VM via RDP. 
-- As different users try to login to the windows VM, the `failed activity` gets logged. Viweing those logs in the `Event Viewer` =>
+- As different users try to login to the windows VM, the `failed activity` gets logged. Vieweing those logs in the `Event Viewer` =>
 
 ![1749513653485](image/README/1749513653485.png)
 
@@ -35,23 +35,49 @@ This project demonstrates a simulated vulnerable Azure VM environment to showcas
 
 ![1749513873593](image/README/1749513873593.png)
 
-- Designed a custom script to use the IP address (from Event Viewer Log) and external 3rd party API to fetch the latitude/longitude details.
+- Designed a *custom script* to use the IP address (from Event Viewer Log) and external 3rd party API to fetch the latitude/longitude details.
 ![1749513968007](image/README/1749513968007.png)
 
 
 ### Log Analysis - Azure Log Analytics Workspace
 - Performed Log Analysis on the fetched logs from failed login attempts as shown below :
 ![1749514129296](image/README/1749514129296.png)
+<br>
 ![1749514152132](image/README/1749514152132.png)
+<br>
+- Filtering logs using Azure KQL queries to comprehend logs better.
 ![1749514172667](image/README/1749514172667.png)
 
-- Using custom Log filtering query, fetched the latitude and longitude details to view the results on Dashboard.
+- Used a **custom KQL query** to extract latitude and longitude data from logs, identifying the geographical origin of incoming attacks.
+    ```
+    Query Used =>
+    FAILED_RDP_WITH_GEO_CL
+    | extend username = extract(@"username:([^,]+)", 1, RawData),
+            timestamp = extract(@"timestamp:([^,]+)", 1, RawData),
+            latitude = extract(@"latitude:([^,]+)", 1, RawData),
+            longitude = extract(@"longitude:([^,]+)", 1, RawData),
+            sourcehost = extract(@"sourcehost:([^,]+)", 1, RawData),
+            state = extract(@"state:([^,]+)", 1, RawData),
+            label = extract(@"label:([^,]+)", 1, RawData),
+            destination = extract(@"destinationhost:([^,]+)", 1, RawData),
+            country = extract(@"country:([^,]+)", 1, RawData)
+        | where destinationhost = "honeypot-vm"
+        | where sourcehost != ""
+        | summarize event_count=count() by timestamp, label, country, state, sourcehost, username, destination, longitude, latitude
+
+    ```
+
+- Mapped the **country of origin** to each **IP address** to visualize and analyze the source of malicious activity.
+
+![1749655006016](image/README/1749655006016.png)
 
 #### Sample Log 
 ```
 latitude:54.89029,longitude:23.92775,destinationhost:honeypot-vm,username:Administrator,sourcehost:91.238.181.31,state:Kauno Apskritis, country:Lithuania,label:Lithuania - 91.238.181.31,timestamp:2025-01-13 21:23:46
 ```
 
-### Final Results
+## Final Results
 
-![1749514420894](image/README/1749514420894.png)
+![1749514420894](image/README/1749514420894.png) <br>
+
+![1749654761462](image/README/1749654761462.png)
